@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo E-commerce Store - Monitored by Boing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="monitoring-banner">
+        🎯 This site is monitored by <strong>Boing</strong> - All requests are being analyzed for security threats
+        <a href="http://localhost:5173" target="_blank" class="view-dashboard">View Dashboard →</a>
+    </div>
+
+    <header>
+        <div class="container">
+            <h1>🛒 Demo E-commerce Store</h1>
+            <p class="subtitle">Shop with confidence - Protected by Boing Security</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('shop')">🛍️ Shop</button>
+            <button class="tab-btn" onclick="showTab('cart')">🛒 Cart (<span id="cart-count">0</span>)</button>
+            <button class="tab-btn" onclick="showTab('attacks')">⚠️ Attack Simulator</button>
+            <button class="tab-btn" onclick="showTab('monitoring')">📊 Live Monitoring</button>
+        </div>
+
+        <!-- Shop Tab -->
+        <div id="shop-tab" class="tab-content active">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search products..." onkeyup="searchProducts()">
+                <button onclick="searchProducts()">Search</button>
+            </div>
+
+            <div id="products-grid" class="products-grid">
+                <div class="loading">Loading products...</div>
+            </div>
+        </div>
+
+        <!-- Cart Tab -->
+        <div id="cart-tab" class="tab-content">
+            <h2>Shopping Cart</h2>
+            <div id="cart-items">
+                <p class="empty-cart">Your cart is empty</p>
+            </div>
+            <div id="cart-total" class="cart-total"></div>
+            <button id="checkout-btn" class="btn btn-primary" onclick="checkout()" style="display: none;">
+                Checkout
+            </button>
+        </div>
+
+        <!-- Attack Simulator Tab -->
+        <div id="attacks-tab" class="tab-content">
+            <h2>⚠️ Attack Simulator</h2>
+            <p class="warning">
+                Click these buttons to simulate various attacks. Boing will detect and alert on these!
+            </p>
+
+            <div class="attack-grid">
+                <div class="attack-card">
+                    <h3>🔴 SQL Injection</h3>
+                    <p>Attempts to inject SQL commands into search queries</p>
+                    <button class="btn btn-danger" onclick="simulateSQLInjection()">
+                        Launch SQL Injection
+                    </button>
+                </div>
+
+                <div class="attack-card">
+                    <h3>🔴 XSS Attack</h3>
+                    <p>Attempts to inject malicious scripts</p>
+                    <button class="btn btn-danger" onclick="simulateXSS()">
+                        Launch XSS Attack
+                    </button>
+                </div>
+
+                <div class="attack-card">
+                    <h3>🔴 Rate Limit Test</h3>
+                    <p>Sends 150 requests rapidly to trigger rate limiting</p>
+                    <button class="btn btn-danger" onclick="simulateRateLimit()">
+                        Trigger Rate Limit
+                    </button>
+                </div>
+
+                <div class="attack-card">
+                    <h3>🔴 Path Traversal</h3>
+                    <p>Attempts to access unauthorized files</p>
+                    <button class="btn btn-danger" onclick="simulatePathTraversal()">
+                        Launch Path Traversal
+                    </button>
+                </div>
+
+                <div class="attack-card">
+                    <h3>🔴 Error Flood</h3>
+                    <p>Generates multiple error responses</p>
+                    <button class="btn btn-danger" onclick="simulateErrorFlood()">
+                        Generate Errors
+                    </button>
+                </div>
+
+                <div class="attack-card">
+                    <h3>🟢 Normal Traffic</h3>
+                    <p>Generates legitimate user behavior</p>
+                    <button class="btn btn-success" onclick="simulateNormalTraffic()">
+                        Generate Normal Traffic
+                    </button>
+                </div>
+            </div>
+
+            <div id="attack-log" class="attack-log">
+                <h3>Attack Log</h3>
+                <div id="attack-messages"></div>
+            </div>
+        </div>
+
+        <!-- Monitoring Tab -->
+        <div id="monitoring-tab" class="tab-content">
+            <h2>📊 Live Monitoring</h2>
+            <p>Real-time view of what Boing is seeing</p>
+
+            <div class="monitoring-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-requests">0</div>
+                    <div class="stat-label">Total Requests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="suspicious-requests">0</div>
+                    <div class="stat-label">Suspicious</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="error-count">0</div>
+                    <div class="stat-label">Errors</div>
+                </div>
+            </div>
+
+            <div class="monitoring-feed">
+                <h3>Recent Requests</h3>
+                <div id="request-feed"></div>
+            </div>
+
+            <div class="monitoring-actions">
+                <button class="btn btn-primary" onclick="window.open('http://localhost:5173', '_blank')">
+                    Open Boing Dashboard
+                </button>
+                <button class="btn btn-secondary" onclick="resetStats()">
+                    Reset Stats
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Demo E-commerce Store | Monitored by Boing Security Platform</p>
+            <p>
+                <a href="http://localhost:5173" target="_blank">View Boing Dashboard</a> | 
+                <a href="http://localhost:5000" target="_blank">API Docs</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

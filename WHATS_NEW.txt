@@ -1,0 +1,125 @@
+================================================================================
+                        🎉 NEW FEATURES ADDED!
+================================================================================
+
+✅ SETTINGS PAGE
+----------------
+- Update your profile (email, name)
+- Change your password
+- Delete your account
+- Access via "Settings" button in top right
+
+✅ DEMO E-COMMERCE API
+----------------------
+- Complete Flask API for testing
+- E-commerce endpoints (products, users, orders)
+- Automatically sends telemetry to Boing
+- Located in: demo-api/
+
+✅ TRAFFIC GENERATOR
+--------------------
+- Automated test script
+- Generates normal and suspicious traffic
+- Triggers various alerts
+- Run with: python demo-api/test_api.py
+
+================================================================================
+                        🚀 HOW TO USE
+================================================================================
+
+1. LOGIN TO BOING
+   - Go to: http://localhost:5173
+   - Email: admin@example.com
+   - Password: admin123
+
+2. TRY SETTINGS
+   - Click "Settings" button
+   - Update your profile
+   - Change password if you want
+
+3. SETUP DEMO API
+   - cd demo-api
+   - pip install -r requirements.txt
+   - python app.py
+
+4. REGISTER IN BOING
+   - Go to "APIs" page
+   - Click "+ Add API"
+   - Name: "Demo E-commerce API"
+   - Copy the API key
+
+5. CONFIGURE DEMO API
+   - Open demo-api/app.py
+   - Set: BOING_API_KEY = "your-key-here"
+   - Restart: python app.py
+
+6. GENERATE TRAFFIC
+   - Open new terminal
+   - cd demo-api
+   - python test_api.py
+   - Press Enter
+
+7. WATCH THE MAGIC
+   - Go to Boing Dashboard
+   - See live requests
+   - Check Alerts page for threats
+   - View Logs for details
+
+================================================================================
+                        📁 NEW FILES
+================================================================================
+
+Frontend:
+  - frontend/src/pages/Settings.jsx
+  - frontend/src/pages/Settings.css
+
+Backend:
+  - backend/routes/profile.py
+
+Demo API:
+  - demo-api/app.py
+  - demo-api/test_api.py
+  - demo-api/requirements.txt
+  - demo-api/README.md
+
+Documentation:
+  - DEMO_SETUP.md
+  - WHATS_NEW.txt (this file)
+
+================================================================================
+                        🎯 WHAT TO EXPECT
+================================================================================
+
+When you run the traffic generator, Boing will detect:
+
+🔴 SQL Injection attempts
+🔴 XSS attacks
+🔴 Rate limit violations
+🔴 Error spikes
+🔴 Latency anomalies
+🔴 Suspicious patterns
+
+You'll see:
+- Real-time alerts in the Alerts page
+- Live activity feed on Dashboard
+- Detailed logs in Logs page
+- Metrics and charts
+
+================================================================================
+                        💡 QUICK TEST
+================================================================================
+
+Want to see it work immediately?
+
+1. Make sure Boing is running (docker compose ps)
+2. Start demo API: cd demo-api && python app.py
+3. In another terminal: python test_api.py
+4. Go to Boing dashboard: http://localhost:5173
+5. Watch the alerts roll in! 🚨
+
+================================================================================
+
+See DEMO_SETUP.md for detailed instructions!
+
+Happy monitoring! 🎉
+================================================================================

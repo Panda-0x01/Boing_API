@@ -1,0 +1,91 @@
+================================================================================
+                        ⚠️ READ THIS FIRST ⚠️
+================================================================================
+
+You tried to run: docker-compose up -d
+But Docker is not installed on your system.
+
+================================================================================
+                    YOU HAVE 2 CHOICES:
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  OPTION 1: Install Docker (EASIEST - Recommended)                          │
+│  ═══════════════════════════════════════════════                           │
+│                                                                             │
+│  1. Download Docker Desktop:                                               │
+│     https://www.docker.com/products/docker-desktop/                        │
+│                                                                             │
+│  2. Install and restart your computer                                      │
+│                                                                             │
+│  3. Start Docker Desktop                                                   │
+│                                                                             │
+│  4. Run this command:                                                      │
+│     docker compose up -d                                                   │
+│                                                                             │
+│  5. Open browser: http://localhost:5173                                    │
+│                                                                             │
+│  ✅ DONE! Everything works automatically                                   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+                                    OR
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  OPTION 2: Manual Setup (No Docker)                                        │
+│  ═══════════════════════════════════                                       │
+│                                                                             │
+│  You already have:                                                         │
+│    ✅ Python 3.13.7                                                        │
+│    ✅ Node.js 24.11.1                                                      │
+│                                                                             │
+│  You need to install:                                                      │
+│    ❌ MySQL 8.0+                                                           │
+│                                                                             │
+│  📖 See: INSTALL_MYSQL_FIRST.txt for step-by-step instructions            │
+│                                                                             │
+│  Quick version:                                                            │
+│  1. Install MySQL from: https://dev.mysql.com/downloads/installer/        │
+│  2. Run: setup-windows.bat                                                 │
+│  3. Run: start-backend.bat (in one terminal)                               │
+│  4. Run: start-frontend.bat (in another terminal)                          │
+│  5. Open browser: http://localhost:5173                                    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+                        📚 HELPFUL FILES
+================================================================================
+
+For detailed instructions, see:
+
+  📄 README_START_HERE.md      ← Start here for your situation
+  📄 INSTALL_MYSQL_FIRST.txt   ← MySQL installation guide
+  📄 SETUP_WINDOWS.md          ← Detailed Windows setup
+  📄 QUICKSTART.md             ← General quick start
+
+================================================================================
+                        🎯 MY RECOMMENDATION
+================================================================================
+
+Install Docker Desktop - it's much easier!
+
+With Docker:
+  ✅ No MySQL installation needed
+  ✅ No configuration needed
+  ✅ Everything works automatically
+  ✅ One command to start: docker compose up -d
+
+Without Docker:
+  ⚠️ Must install MySQL manually
+  ⚠️ Must configure database
+  ⚠️ Must manage multiple terminals
+  ⚠️ More things can go wrong
+
+================================================================================
+
+Choose your option and follow the instructions above! 🚀
+
+================================================================================

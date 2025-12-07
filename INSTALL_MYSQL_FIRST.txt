@@ -1,0 +1,155 @@
+================================================================================
+                    YOU NEED TO INSTALL MYSQL FIRST
+================================================================================
+
+You have Python ✅ and Node.js ✅ installed, but you need MySQL to run Boing.
+
+================================================================================
+OPTION 1: Install MySQL (5 minutes)
+================================================================================
+
+Step 1: Download MySQL
+----------------------
+Go to: https://dev.mysql.com/downloads/installer/
+
+Click: "Windows (x86, 32-bit), MSI Installer" 
+       (mysql-installer-community-8.x.x.msi - about 400MB)
+
+Click "No thanks, just start my download"
+
+Step 2: Install MySQL
+----------------------
+1. Run the downloaded installer
+2. Choose "Developer Default" setup type
+3. Click "Next" through the installation
+4. When asked for root password:
+   - Set password: boing123 (or your own - remember it!)
+5. Complete the installation
+6. MySQL will start automatically
+
+Step 3: Verify Installation
+----------------------------
+Open a NEW Command Prompt or PowerShell and type:
+
+    mysql --version
+
+You should see: mysql  Ver 8.0.x
+
+Step 4: Setup Boing Database
+-----------------------------
+In Command Prompt/PowerShell, run:
+
+    mysql -u root -p
+
+Enter your root password (boing123 or what you set)
+
+Then copy and paste these commands one by one:
+
+    CREATE DATABASE boing;
+    CREATE USER 'boing'@'localhost' IDENTIFIED BY 'boingpass123';
+    GRANT ALL PRIVILEGES ON boing.* TO 'boing'@'localhost';
+    FLUSH PRIVILEGES;
+    EXIT;
+
+Step 5: Load Database Schema
+-----------------------------
+In your project folder, run:
+
+    mysql -u boing -p boing < backend/schema.sql
+
+Enter password: boingpass123
+
+Step 6: Configure Backend
+--------------------------
+    cd backend
+    copy ..\.env.example .env
+
+Edit the .env file (use Notepad):
+    
+    DB_HOST=localhost
+    DB_PORT=3306
+    DB_USER=boing
+    DB_PASSWORD=boingpass123
+    DB_NAME=boing
+    JWT_SECRET=change-this-to-a-very-long-random-secret-key-at-least-32-characters
+    ENCRYPTION_KEY=change-this-to-32-char-key-here
+
+Step 7: Start Backend
+----------------------
+    cd backend
+    python -m venv venv
+    .\venv\Scripts\activate
+    pip install -r requirements.txt
+    python main.py
+
+Backend runs on: http://localhost:8000
+
+Step 8: Start Frontend (NEW TERMINAL)
+--------------------------------------
+Open a NEW terminal window:
+
+    cd frontend
+    npm install
+    npm run dev
+
+Frontend runs on: http://localhost:5173
+
+Step 9: Access Application
+---------------------------
+Open browser: http://localhost:5173
+
+Login:
+    Email: admin@boing.local
+    Password: admin123
+
+DONE! 🎉
+
+================================================================================
+OPTION 2: Install Docker Instead (Easier)
+================================================================================
+
+If you prefer an easier setup:
+
+1. Install Docker Desktop:
+   https://www.docker.com/products/docker-desktop/
+
+2. Restart your computer
+
+3. Start Docker Desktop
+
+4. In project folder, run:
+   docker compose up -d
+
+5. Open: http://localhost:5173
+
+That's it! Docker handles MySQL automatically.
+
+================================================================================
+OPTION 3: Use Automated Scripts
+================================================================================
+
+I've created helper scripts for you:
+
+1. setup-windows.bat      - Checks requirements and sets up project
+2. start-backend.bat      - Starts the backend server
+3. start-frontend.bat     - Starts the frontend server
+
+After installing MySQL, just run:
+    setup-windows.bat
+
+Then start the servers:
+    start-backend.bat     (in one terminal)
+    start-frontend.bat    (in another terminal)
+
+================================================================================
+NEED HELP?
+================================================================================
+
+If you get stuck:
+1. Check SETUP_WINDOWS.md for detailed troubleshooting
+2. Make sure MySQL service is running:
+   - Open Services (Win+R, type "services.msc")
+   - Find "MySQL80" service
+   - Make sure it's "Running"
+
+================================================================================

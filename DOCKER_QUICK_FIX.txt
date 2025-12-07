@@ -1,0 +1,98 @@
+================================================================================
+                    🐳 DOCKER QUICK FIX
+================================================================================
+
+Your Error:
+-----------
+"open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file"
+
+What This Means:
+----------------
+Docker is installed ✅
+BUT Docker Desktop is NOT running ❌
+
+================================================================================
+                        HOW TO FIX (30 seconds)
+================================================================================
+
+Step 1: Start Docker Desktop
+-----------------------------
+1. Press Windows key
+2. Type: "Docker Desktop"
+3. Click on "Docker Desktop" app
+4. Wait 30-60 seconds for it to fully start
+
+Step 2: Look for the Whale Icon
+--------------------------------
+Check your system tray (bottom right corner):
+- You should see a whale icon 🐋
+- Wait until it stops animating
+- It should say "Docker Desktop is running"
+
+Step 3: Try Again
+-----------------
+Once Docker Desktop is running, run this command again:
+
+    docker compose up -d
+
+That's it! ✅
+
+================================================================================
+                        VERIFY IT'S WORKING
+================================================================================
+
+Run this command:
+
+    docker info
+
+If you see Docker information (not an error), Docker is running! ✅
+
+If you still see an error, Docker Desktop isn't fully started yet.
+Wait a bit longer and try again.
+
+================================================================================
+                        AFTER DOCKER STARTS
+================================================================================
+
+1. Run: docker compose up -d
+
+2. Wait for it to download and start (first time takes 2-3 minutes)
+
+3. Check status: docker compose ps
+
+4. Open browser: http://localhost:5173
+
+5. Login:
+   Email: admin@boing.local
+   Password: admin123
+
+================================================================================
+                        TROUBLESHOOTING
+================================================================================
+
+Docker Desktop won't start?
+----------------------------
+1. Restart your computer
+2. Try starting Docker Desktop again
+3. If still fails, see FIX_DOCKER_ERROR.md
+
+Docker starts but stops immediately?
+-------------------------------------
+1. Open Docker Desktop
+2. Click Settings (gear icon)
+3. Go to "General"
+4. Make sure "Use WSL 2" is checked
+5. Click "Apply & Restart"
+
+Still having issues?
+--------------------
+See: FIX_DOCKER_ERROR.md for detailed troubleshooting
+
+Or use manual setup instead:
+See: INSTALL_MYSQL_FIRST.txt
+
+================================================================================
+
+TL;DR: Just start Docker Desktop app and wait for it to fully load! 🚀
+
+================================================================================
