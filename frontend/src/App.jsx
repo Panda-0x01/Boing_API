@@ -61,7 +61,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Layout user={user} onLogout={logout}>
+      <Layout user={user} onLogout={logout} token={token}>
         <Routes>
           <Route path="/" element={<Dashboard token={token} />} />
           <Route path="/apis" element={<APIs token={token} />} />
