@@ -10,6 +10,7 @@ from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 import pickle
 import re
+import json
 
 from database import get_db_connection
 from config import settings, DETECTOR_CONFIG, ATTACK_PATTERNS

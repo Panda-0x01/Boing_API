@@ -1,14 +1,22 @@
 import { useState, useEffect } from 'react';
+import './APIs.css';
 
 function APIs({ token }) {
   const [apis, setApis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', base_url: '', description: '' });
+  const [apiMetrics, setApiMetrics] = useState({});
 
   useEffect(() => {
     fetchAPIs();
   }, []);
+
+  useEffect(() => {
+    if (apis.length > 0) {
+      fetchAllApiMetrics();
+    }
+  }, [apis]);
 
   const fetchAPIs = async () => {
     try {
@@ -24,6 +32,29 @@ function APIs({ token }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchAllApiMetrics = async () => {
+    const metricsData = {};
+    for (const api of apis) {
+      try {
+        const res = await fetch('/api/metrics', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ api_id: api.id })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          metricsData[api.id] = data;
+        }
+      } catch (err) {
+        console.error(`Failed to fetch metrics for API ${api.id}:`, err);
+      }
+    }
+    setApiMetrics(metricsData);
   };
 
   const handleSubmit = async (e) => {
@@ -117,39 +148,64 @@ function APIs({ token }) {
           <p className="text-secondary">No APIs registered yet. Click "Add API" to get started.</p>
         </div>
       ) : (
-        <div className="card">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>API Key</th>
-                <th>Base URL</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {apis.map(api => (
-                <tr key={api.id}>
-                  <td className="font-semibold">{api.name}</td>
-                  <td><code>{api.api_key}</code></td>
-                  <td className="text-sm">{api.base_url || '-'}</td>
-                  <td>
-                    <span className={`badge ${api.is_active ? 'badge-success' : 'badge-danger'}`}>
-                      {api.is_active ? 'Active' : 'Inactive'}
-                    </span>
-                  </td>
-                  <td className="text-sm">{new Date(api.created_at).toLocaleDateString()}</td>
-                  <td>
-                    <button onClick={() => handleDelete(api.id)} className="btn btn-danger btn-sm">
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="apis-grid">
+          {apis.map(api => {
+            const metrics = apiMetrics[api.id];
+            return (
+              <div key={api.id} className="api-card">
+                <div className="api-card-header">
+                  <div>
+                    <h3 className="api-card-title">{api.name}</h3>
+                    <p className="api-card-url">{api.base_url || 'No base URL'}</p>
+                  </div>
+                  <span className={`badge ${api.is_active ? 'badge-success' : 'badge-danger'}`}>
+                    {api.is_active ? 'Active' : 'Inactive'}
+                  </span>
+                </div>
+
+                <div className="api-card-key">
+                  <label className="api-key-label">API Key:</label>
+                  <code className="api-key-code">{api.api_key}</code>
+                </div>
+
+                {metrics ? (
+                  <div className="api-metrics-grid">
+                    <div className="api-metric">
+                      <span className="api-metric-label">Total Requests</span>
+                      <span className="api-metric-value">{metrics.total_requests?.toLocaleString() || 0}</span>
+                    </div>
+                    <div className="api-metric">
+                      <span className="api-metric-label">Error Rate</span>
+                      <span className="api-metric-value text-warning">
+                        {((metrics.error_rate || 0) * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                    <div className="api-metric">
+                      <span className="api-metric-label">Avg Latency</span>
+                      <span className="api-metric-value">{metrics.avg_latency_ms?.toFixed(0) || 0}ms</span>
+                    </div>
+                    <div className="api-metric">
+                      <span className="api-metric-label">Threats</span>
+                      <span className="api-metric-value text-destructive">
+                        {metrics.suspicious_requests || 0}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="api-metrics-loading">Loading metrics...</div>
+                )}
+
+                <div className="api-card-footer">
+                  <span className="api-card-date">
+                    Created {new Date(api.created_at).toLocaleDateString()}
+                  </span>
+                  <button onClick={() => handleDelete(api.id)} className="btn btn-danger btn-sm">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

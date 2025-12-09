@@ -8,6 +8,28 @@ function Dashboard({ token }) {
   const [loading, setLoading] = useState(true);
   const [ws, setWs] = useState(null);
   const [liveActivity, setLiveActivity] = useState([]);
+  const [apis, setApis] = useState([]);
+  const [selectedApiId, setSelectedApiId] = useState(() => {
+    // Load saved filter from localStorage
+    return localStorage.getItem('boing_selected_api') || 'all';
+  });
+  const [apiMetrics, setApiMetrics] = useState({});
+
+  useEffect(() => {
+    fetchApis();
+  }, []);
+
+  // Save selected API to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('boing_selected_api', selectedApiId);
+  }, [selectedApiId]);
+
+  // Fetch metrics for all APIs when viewing "all"
+  useEffect(() => {
+    if (selectedApiId === 'all' && apis.length > 0) {
+      fetchAllApiMetrics();
+    }
+  }, [selectedApiId, apis]);
 
   useEffect(() => {
     fetchMetrics();
@@ -19,7 +41,7 @@ function Dashboard({ token }) {
       clearInterval(interval);
       if (ws) ws.close();
     };
-  }, []);
+  }, [selectedApiId]);
 
   const connectWebSocket = () => {
     const websocket = new WebSocket(`ws://localhost:8000/ws/live`);
@@ -38,15 +60,53 @@ function Dashboard({ token }) {
     setWs(websocket);
   };
 
+  const fetchApis = async () => {
+    try {
+      const res = await fetch('/api/apis', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setApis(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch APIs:', err);
+    }
+  };
+
+  const fetchAllApiMetrics = async () => {
+    const metricsData = {};
+    for (const api of apis) {
+      try {
+        const res = await fetch('/api/metrics', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ api_id: api.id })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          metricsData[api.id] = data;
+        }
+      } catch (err) {
+        console.error(`Failed to fetch metrics for API ${api.id}:`, err);
+      }
+    }
+    setApiMetrics(metricsData);
+  };
+
   const fetchMetrics = async () => {
     try {
+      const body = selectedApiId === 'all' ? {} : { api_id: parseInt(selectedApiId) };
       const res = await fetch('/api/metrics', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({})
+        body: JSON.stringify(body)
       });
       if (res.ok) {
         const data = await res.json();
@@ -80,9 +140,72 @@ function Dashboard({ token }) {
   return (
     <div className="dashboard">
       <div className="page-header">
-        <h1 className="page-title">Dashboard</h1>
-        <p className="page-description">Monitor your API traffic and security in real-time</p>
+        <div>
+          <h1 className="page-title">Dashboard</h1>
+          <p className="page-description">Monitor your API traffic and security in real-time</p>
+        </div>
+        {apis.length > 0 && (
+          <div className="api-selector">
+            <label htmlFor="api-filter" className="api-selector-label">Filter by API:</label>
+            <select 
+              id="api-filter"
+              className="api-selector-dropdown"
+              value={selectedApiId}
+              onChange={(e) => setSelectedApiId(e.target.value)}
+            >
+              <option value="all">All APIs ({apis.length})</option>
+              {apis.map(api => (
+                <option key={api.id} value={api.id}>
+                  {api.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
+
+      {selectedApiId === 'all' && apis.length > 1 && (
+        <div className="apis-overview">
+          <h2 className="section-title">APIs Overview</h2>
+          <div className="apis-overview-grid">
+            {apis.map(api => {
+              const metrics = apiMetrics[api.id];
+              return (
+                <div key={api.id} className="api-overview-card">
+                  <div className="api-overview-header">
+                    <h3 className="api-overview-name">{api.name}</h3>
+                    <span className={`badge ${api.is_active ? 'badge-success' : 'badge-danger'}`}>
+                      {api.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                  </div>
+                  {metrics ? (
+                    <div className="api-overview-metrics">
+                      <div className="api-overview-metric">
+                        <span className="metric-value">{metrics.total_requests?.toLocaleString() || 0}</span>
+                        <span className="metric-label">Requests</span>
+                      </div>
+                      <div className="api-overview-metric">
+                        <span className="metric-value text-warning">{((metrics.error_rate || 0) * 100).toFixed(1)}%</span>
+                        <span className="metric-label">Errors</span>
+                      </div>
+                      <div className="api-overview-metric">
+                        <span className="metric-value">{metrics.avg_latency_ms?.toFixed(0) || 0}ms</span>
+                        <span className="metric-label">Latency</span>
+                      </div>
+                      <div className="api-overview-metric">
+                        <span className="metric-value text-destructive">{metrics.suspicious_requests || 0}</span>
+                        <span className="metric-label">Threats</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="api-overview-loading">Loading...</div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="stats-grid">
         <div className="stat-card">
@@ -239,6 +362,7 @@ function Dashboard({ token }) {
           </div>
         )}
       </div>
+
     </div>
   );
 }

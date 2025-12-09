@@ -17,8 +17,23 @@
 }
 
 .auth-logo {
-  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
   margin-bottom: 1rem;
+}
+
+.auth-logo svg {
+  width: 32px;
+  height: 32px;
+  color: hsl(var(--muted-foreground));
+}
+
+.auth-logo h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: hsl(var(--muted-foreground));
 }
 
 .auth-title {

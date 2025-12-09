@@ -1,0 +1,130 @@
+/* APIs Grid Layout */
+.apis-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
+/* API Card */
+.api-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) + 2px);
+  padding: 1.5rem;
+  transition: all 0.2s;
+}
+
+.api-card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  border-color: hsl(var(--primary) / 0.5);
+}
+
+/* API Card Header */
+.api-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.api-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: hsl(var(--foreground));
+}
+
+.api-card-url {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  word-break: break-all;
+}
+
+/* API Key Section */
+.api-card-key {
+  background: hsl(var(--muted) / 0.5);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.api-key-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.api-key-code {
+  display: block;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: hsl(var(--primary));
+  word-break: break-all;
+}
+
+/* API Metrics Grid */
+.api-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.api-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.api-metric-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.api-metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.api-metrics-loading {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+/* API Card Footer */
+.api-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.api-card-date {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .apis-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .api-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
